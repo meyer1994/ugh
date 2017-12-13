@@ -1,9 +1,10 @@
 # UGH
 Use JSON templates to create terminal UI with urwid
+
 PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses). Ok. Maybe the 'U' means 'urwid'...
 
 
-## Usage
+## Usage:
 1. Define the `class` attribute with the name of the class you want to use;
 2. Define the variables of the constructor as if you were coding it normally;
 3. ????
@@ -25,7 +26,7 @@ loop.run()
 
 ```
 
-### Example
+## Example:
 [templ.json](https://github.com/meyer1994/ugh/blob/master/example/templ.json)
 ```json
 {
