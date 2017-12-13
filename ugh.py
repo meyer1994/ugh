@@ -30,16 +30,6 @@ def construct(items_dict):
     Returns:
         The top widget described in items_dict with it's inner widgets all
         created and included in itself.
-
-    Raises:
-        KeyError: if one of the args it's not part of the defined class'
-        constructor.
-
-    TODO:
-        - Handle lists of widgets ('_list' in etc...)
-        - Handle tuple (style, widget)
-        - Handle callbacks (inspect + search for functions in some file)
-
     '''
 
     the_class = items_dict['class']

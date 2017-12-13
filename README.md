@@ -43,3 +43,8 @@ loop.run()
     }
 }
 ```
+
+
+## TODO
+- ~~Handle lists and tuples.~~
+- Handle callbacks.
