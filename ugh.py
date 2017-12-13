@@ -7,33 +7,58 @@ import urwid
 # will hold the dictionary containing all the classes of the urwid module
 CLASSES = dict(inspect.getmembers(urwid, inspect.isclass))
 
-# get file
-with open('test.json', 'r') as f:
-    json_dict = json.load(f)
-
 
 def construct(items_dict):
+    '''
+    Constructs the classes described in the dict.
+
+    It will create all the classes described in the dictionary, normally
+    obtained from a .json. It does it in a recursive way. Which means,
+    everytime it finds a new dict in the items, it will call itself again with
+    this, just found, dict as it's parameter.
+
+    Args:
+        items_dict: dict of items to be created.
+
+    Returns:
+        The top widget described in items_dict with it's inner widgets all
+        created and included in itself.
+
+    Raises:
+        KeyError: if one of the args it's not part of the defined class'
+        constructor.
+
+    TODO:
+        - Handle lists of widgets ('_list' in etc...)
+        - Handle tuple (style, widget)
+        - Handle callbacks (inspect + search for functions in some file)
+
+    '''
 
     the_class = items_dict['class']
     the_class = CLASSES[the_class]
-
     class_sig = inspect.signature(the_class)
-    class_set = set(dir(the_class))
-
+    # will store all the arguments to be used in the constructor
     class_args = {}
 
     for key, item in items_dict.items():
 
-        if key in class_sig.parameters:
-            # there is more classes to take care of
-            if isinstance(item, dict):
-                class_args[key] = construct(item)
-            else:
-                class_args[key] = item
+        if key == 'class':
+            continue
+
+        # more classes to take care of
+        if isinstance(item, dict):
+            class_args[key] = construct(item)
+        elif isinstance(item, list):
+            class_args[key] = item
+        elif isinstance(item, tuple):
+            # TODO
+            pass
+        else:
+            class_args[key] = item
+
 
     bound_args = class_sig.bind(**class_args)
     bound_args.apply_defaults()
 
     return the_class(*bound_args.args, **bound_args.kwargs)
-
-t = construct(json_dict)

@@ -1,8 +1,8 @@
-
 {
-    "class": "Filler",
-    "body": {
-        "class": "Button",
-        "label": "nice"
-    }
+  "class": "Filler",
+  "body":
+  {
+      "class": "Text",
+      "markup": "nice"
+  }
 }
