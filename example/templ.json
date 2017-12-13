@@ -1,0 +1,13 @@
+{
+    "class": "Filler",
+    "body":
+    {
+        "class": "AttrMap",
+        "w": {
+            "class": "Text",
+            "markup": "nice",
+            "align": "center"
+        },
+        "attr_map": "bob"
+    }
+}

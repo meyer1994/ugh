@@ -10,6 +10,11 @@ def exit_q(key):
     if key == 'q':
         raise urwid.ExitMainLoop()
 
+palette = [
+    ('banner', 'black', 'light gray'),
+    ('streak', 'black', 'dark red'),
+    ('bg', 'black', 'dark blue') ]
+
 t = ugh.construct(templ)
-loop = urwid.MainLoop(t, unhandled_input=exit_q)
+loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
 loop.run()

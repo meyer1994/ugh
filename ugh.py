@@ -14,8 +14,15 @@ def construct(items_dict):
 
     It will create all the classes described in the dictionary, normally
     obtained from a .json. It does it in a recursive way. Which means,
-    everytime it finds a new dict in the items, it will call itself again with
-    this, just found, dict as it's parameter.
+    everytime it finds a new dict in the items, with the 'class' key, it will
+    call itself again with this, just found, dict as it's parameter.
+
+    Note:
+        The attributes used to set different markups for the widgets, specially
+        the Text widget, are supposed to be already defined in a 'pallete' that
+        is passed to the main loop. If it is not defined, the program WILL NOT
+        fail, it will simply execute without the attributes. This is an urwid
+        strategy.
 
     Args:
         items_dict: dict of items to be created.
@@ -47,15 +54,13 @@ def construct(items_dict):
             continue
 
         # more classes to take care of
-        if isinstance(item, dict):
+        if isinstance(item, dict) and 'class' in item:
             class_args[key] = construct(item)
-        elif isinstance(item, list):
-            class_args[key] = item
-        elif isinstance(item, tuple):
-            # TODO
-            pass
         else:
-            class_args[key] = item
+            try:
+                class_args[key] = eval(item)
+            except Exception as e:
+                class_args[key] = eval("'%s'" % item)
 
 
     bound_args = class_sig.bind(**class_args)
