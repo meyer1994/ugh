@@ -1,11 +1,14 @@
 import inspect
 import json
+from ast import literal_eval
+import re
 
 import urwid
 
 
 # will hold the dictionary containing all the classes of the urwid module
 CLASSES = dict(inspect.getmembers(urwid, inspect.isclass))
+
 
 
 def construct(items_dict):
@@ -46,11 +49,31 @@ def construct(items_dict):
         # more classes to take care of
         if isinstance(item, dict) and 'class' in item:
             class_args[key] = construct(item)
-        else:
-            try:
-                class_args[key] = eval(item)
-            except Exception as e:
-                class_args[key] = eval("'%s'" % item)
+            continue
+
+        if isinstance(item, list):
+            lst = []
+            for obj in item:
+                if isinstance(obj, dict) and 'class' in obj:
+                    lst.append(construct(obj))
+                else:
+                    try:
+                        lst.append(literal_eval(obj))
+                    except Exception:
+                        lst.append(obj)
+
+            class_args[key] = lst
+            continue
+
+        try:
+            class_args[key] = literal_eval(item)
+        except Exception:
+            class_args[key] = item
+
+
+
+
+
 
 
     bound_args = class_sig.bind(**class_args)

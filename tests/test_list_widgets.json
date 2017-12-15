@@ -1,25 +1,9 @@
 {
     "class": "Pile",
     "widget_list": [
-        {
-            "class": "Text",
-            "markup": "nice0"
-        },
-        {
-            "class": "Text",
-            "markup": "nice1"
-        },
-        {
-            "class": "Text",
-            "markup": "nice2"
-        },
-        {
-            "class": "Text",
-            "markup": "nice3"
-        },
-        {
-            "class": "Text",
-            "markup": "nice4"
-        },
+        { "class": "Text", "markup": "nice0" },
+        { "class": "Text", "markup": "nice1" },
+        { "class": "Text", "markup": "nice2" },
+        { "class": "Text", "markup": "nice3" }
     ]
 }

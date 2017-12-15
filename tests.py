@@ -2,6 +2,7 @@
 import unittest
 import json
 
+
 # debug
 from pprint import pprint
 
@@ -105,7 +106,28 @@ class UghTest(unittest.TestCase):
         self.assertEqual(placeholder.original_widget.label, 'nice')
 
     def test_list_widgets(self):
-        pass
+        '''
+        Tests the creation of widgets that receive lists of widgets in it's
+        constructor.
+
+        For example, the Pile widget. It receives a list of widgets, or tuples,
+        with options for each widget.
+        '''
+
+        with open('tests/test_list_widgets.json', 'r') as f:
+            widgets_dict = json.load(f)
+
+        pile = ugh.construct(widgets_dict)
+
+        # types
+        for w, _ in pile.contents:
+            self.assertTrue(isinstance(w, urwid.Text))
+
+        # properties
+        i = 0
+        for w, _ in pile.contents:
+            self.assertEqual(w.text, f'nice{i}')
+            i += 1
 
 
 
