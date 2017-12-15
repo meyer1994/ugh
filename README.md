@@ -1,6 +1,8 @@
 # UGH
 Use JSON templates to create terminal UI with urwid
 
+[![Build Status](https://travis-ci.org/meyer1994/ugh.svg?branch=master)](https://travis-ci.org/meyer1994/ugh)
+
 PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses). Ok. Maybe the 'U' means 'urwid'...
 
 
