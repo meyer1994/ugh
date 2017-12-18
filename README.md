@@ -12,14 +12,14 @@ PS: UGH does not mean anything. It is what I think when I need to use urwid (sti
 3. ????
 4. Profit?
 
-[ex.py](example/ex.py)
+[ex0.py](example/ex0.py)
 ```python
 import urwid
 import json
 
 import ugh
 
-with open('templ.json', 'r') as f:
+with open('templ0.json',) as f:
     templ = json.load(f)
 
 t = ugh.construct(templ)
@@ -28,7 +28,7 @@ loop.run()
 
 ```
 
-[templ.json](example/templ.json)
+[templ0.json](example/templ0.json)
 ```json
 {
     "class": "Filler",
@@ -47,4 +47,5 @@ loop.run()
 
 ## TODO
 - ~~Handle lists and tuples.~~
-- Handle callbacks.
+-- Better way to handle tuples.
+- Handle callbacks (it breaks everything, for now).
