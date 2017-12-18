@@ -151,6 +151,27 @@ class UghTest(unittest.TestCase):
 
         iterator(widget)
 
+    def test_multiple_text_attrs(self):
+
+        with open('tests/test_multiple_text_attrs.json') as f:
+            widgets_dict = json.load(f)
+
+        widget = ugh.construct(widgets_dict)
+
+        text = widget.text
+        correct_text = 'nice0nice1nice2'
+        self.assertEqual(text, correct_text)
+
+        attrs = widget.get_text()
+        correct_attrs = (
+            'nice0nice1nice2',
+            [
+                ('some_attr', 5),
+                (None, 5),
+                ('other_attr', 5)
+            ]
+        )
+        self.assertEqual(attrs, correct_attrs)
 
 
 if __name__ == '__main__':
