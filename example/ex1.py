@@ -3,7 +3,7 @@ import json
 
 import ugh
 
-with open('templ.json', 'r') as f:
+with open('templ1.json') as f:
     templ = json.load(f)
 
 def exit_q(key):
