@@ -1,7 +1,6 @@
 {
     "class": "Filler",
-    "body":
-    {
+    "body": {
         "class": "AttrMap",
         "w": {
             "class": "Text",

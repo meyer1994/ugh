@@ -12,7 +12,7 @@ PS: UGH does not mean anything. It is what I think when I need to use urwid (sti
 3. ????
 4. Profit?
 
-[ex.py](https://github.com/meyer1994/ugh/blob/master/example/ex.py)
+[ex.py](example/ex.py)
 ```python
 import urwid
 import json
@@ -28,13 +28,11 @@ loop.run()
 
 ```
 
-## Example:
-[templ.json](https://github.com/meyer1994/ugh/blob/master/example/templ.json)
+[templ.json](example/templ.json)
 ```json
 {
     "class": "Filler",
-    "body":
-    {
+    "body": {
         "class": "AttrMap",
         "w": {
             "class": "Text",
