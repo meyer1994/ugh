@@ -24,7 +24,7 @@ class UghTest(unittest.TestCase):
         created.
         '''
 
-        with open('tests/test_simple_widgets.json', 'r') as f:
+        with open('tests/test_simple_widgets.json') as f:
             widgets_dict = json.load(f)
 
         for key, item in widgets_dict.items():
@@ -55,7 +55,7 @@ class UghTest(unittest.TestCase):
         Test if attributes passed are properly loaded.
         '''
 
-        with open('tests/test_text_attr.json', 'r') as f:
+        with open('tests/test_text_attr.json') as f:
             text_dict = json.load(f)
 
         text = ugh.construct(text_dict)
@@ -79,7 +79,7 @@ class UghTest(unittest.TestCase):
         constructor. For example: Filler, WdigetPlaceholder etc.
         '''
 
-        with open('tests/test_composite_widgets.json', 'r') as f:
+        with open('tests/test_composite_widgets.json') as f:
             widgets_dict = json.load(f)
 
         filler = ugh.construct(widgets_dict['filler'])
@@ -114,7 +114,7 @@ class UghTest(unittest.TestCase):
         with options for each widget.
         '''
 
-        with open('tests/test_list_widgets.json', 'r') as f:
+        with open('tests/test_list_widgets.json') as f:
             widgets_dict = json.load(f)
 
         pile = ugh.construct(widgets_dict)
@@ -128,6 +128,36 @@ class UghTest(unittest.TestCase):
         for w, _ in pile.contents:
             self.assertEqual(w.text, f'nice{i}')
             i += 1
+
+    def test_composite_list_widgets(self):
+        '''
+        Tests widgets that have widgets with lists of widgets in it.
+
+        A multi-level test_list_widgets, basically.
+        '''
+
+        with open('tests/test_composite_list_widgets.json') as f:
+            widgets_dict = json.load(f)
+
+        widget = ugh.construct(widgets_dict)
+
+        def iterator(widget):
+
+            counter = 0
+            for w, _ in widget.contents:
+
+                if isinstance(w, urwid.Text):
+                    self.assertEqual(w.text, f'nice{counter}')
+                    counter += 1
+                    continue
+
+                if isinstance(w, urwid.Columns):
+                    iterator(w)
+
+        iterator(widget)
+
+
+
 
 
 
