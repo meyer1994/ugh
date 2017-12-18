@@ -1,16 +1,11 @@
-# std modules
+
 import unittest
 import json
 
-
-# debug
-from pprint import pprint
-
-# 3rd party
 import urwid
 
-# my module
 import ugh
+
 
 class UghTest(unittest.TestCase):
 
@@ -155,9 +150,6 @@ class UghTest(unittest.TestCase):
                     iterator(w)
 
         iterator(widget)
-
-
-
 
 
 
