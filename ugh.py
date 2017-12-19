@@ -46,32 +46,14 @@ def handle_list(item):
 
     lst = []
     for obj in item:
-        if is_class(obj) or isinstance(obj, list):
+        if is_class(obj):
             lst.append(construct(obj))
-        else:
-            # or it will be some tuple, that is why we use the
-            # literal_eval, or it will be some string
-            try:
-                lst.append(literal_eval(obj))
-            except Exception:
-                lst.append(obj)
-    return lst
+            continue
 
+        if isinstance(obj, list):
+            lst.append(handle_list(obj))
 
-def handle_tuple(item):
-    '''
-    Handle tuples.
-
-    Same as calling `tuple(handle_list(item))`.
-
-    Args:
-        item: Iterable of objects to be threated.
-
-    Returns:
-        Tuple of objects after all the threating was done.
-    '''
-
-    return tuple(handle_list(item))
+    return tuple(lst)
 
 
 def construct(items_dict):
@@ -119,23 +101,7 @@ def construct(items_dict):
             class_args[key] = handle_list(item)
             continue
 
-        # threat tuples
-        try:
-            obj = literal_eval(item)
-            if isinstance(obj, tuple):
-                class_args[key] = handle_tuple(obj)
-            else:
-                class_args[key] = obj
-
-        # none of the above
-        except Exception:
-            class_args[key] = item
-
-
-
-
-
-
+        class_args[key] = item
 
     bound_args = class_sig.bind(**class_args)
     bound_args.apply_defaults()
