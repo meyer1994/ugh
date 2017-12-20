@@ -148,7 +148,8 @@ def construct(items_dict):
 
     # markup edge-case testing
     if 'markup' in class_args:
-        class_args['markup'] = handle_markup(class_args['markup'])
+        markup = class_args['markup']
+        class_args['markup'] = handle_markup(markup)
 
 
     bound_args = class_sig.bind(**class_args)
@@ -156,7 +157,6 @@ def construct(items_dict):
 
     constructed_class = the_class(*bound_args.args, **bound_args.kwargs)
 
-    global ids
     if 'id' in items_dict:
         i = items_dict['id']
         ids[i] = constructed_class
