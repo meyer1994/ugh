@@ -1,4 +1,3 @@
-
 import unittest
 import json
 
@@ -159,15 +158,15 @@ class UghTest(unittest.TestCase):
         widget = ugh.construct(widgets_dict)
 
         text = widget.text
-        correct_text = 'nice0nice1nice2'
+        correct_text = 'nice0 nice1 nice2'
         self.assertEqual(text, correct_text)
 
         attrs = widget.get_text()
         correct_attrs = (
-            'nice0nice1nice2',
+            'nice0 nice1 nice2',
             [
-                ('some_attr', 5),
-                (None, 5),
+                ('some_attr', 6),
+                (None, 6),
                 ('other_attr', 5)
             ]
         )

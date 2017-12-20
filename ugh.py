@@ -46,14 +46,55 @@ def handle_list(item):
 
     lst = []
     for obj in item:
+
         if is_class(obj):
             lst.append(construct(obj))
             continue
 
         if isinstance(obj, list):
             lst.append(handle_list(obj))
+            continue
+
+        lst.append(obj)
 
     return tuple(lst)
+
+
+def handle_markup(markup):
+    '''
+    Handle markups edge-case.
+
+    There is this special case for when we are trying to add a list of tuples
+    to an urwid.Text.
+
+    Example:
+    >>> import urwid
+    >>> l = [ ('attr1', 'text1'), 'text2', ('attr2', 'text3') ]
+    >>> t = urwid.Text(l)
+    >>> t.get_text()
+    ('text1text2text3', [('attr1', 4), (None, 5), ('attr2', 5)])
+
+    In this case, as our program threats all lists as tuples, we need to
+    convert the tuple, here, to a list.
+
+    Args:
+        markup: The markup to threat. It may be a list of tuples and strings,
+        list of tuples, a list of strings or a single string.
+
+    Returns:
+        The markup itself if it detects that it is not a list of tuples. A list
+        of tuples and/or strings otherwise.
+    '''
+
+    # detect json list (tuple)
+    if isinstance(markup, tuple):
+        for i in markup:
+            # if there is any tuple inside, it meanst it should be a list of
+            # markups
+            if isinstance(i, tuple):
+                return list(markup)
+
+    return markup
 
 
 def construct(items_dict):
@@ -102,6 +143,10 @@ def construct(items_dict):
             continue
 
         class_args[key] = item
+
+    # markup edge-case testing
+    if 'markup' in class_args:
+        class_args['markup'] = handle_markup(class_args['markup'])
 
     bound_args = class_sig.bind(**class_args)
     bound_args.apply_defaults()
