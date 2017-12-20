@@ -133,22 +133,26 @@ class UghTest(unittest.TestCase):
         with open('tests/test_composite_list_widgets.json') as f:
             widgets_dict = json.load(f)
 
-        widget = ugh.construct(widgets_dict)
+        pile = ugh.construct(widgets_dict)
 
-        def iterator(widget):
+        cols = pile.contents[0][0]
+        self.assertTrue(isinstance(cols, urwid.Columns))
 
-            counter = 0
-            for w, _ in widget.contents:
+        text = cols.contents[0][0]
+        self.assertTrue(isinstance(text, urwid.Text))
+        txt = 'text0text1text2'
+        self.assertEqual(text.text, txt)
+        text_attrs = (txt, [ ("attr0", 5), (None, 5), ("attr2", 5) ])
+        self.assertEqual(text.get_text(), text_attrs)
 
-                if isinstance(w, urwid.Text):
-                    self.assertEqual(w.text, f'nice{counter}')
-                    counter += 1
-                    continue
+        button = cols.contents[1][0]
+        self.assertTrue(isinstance(button, urwid.Button))
+        self.assertEqual(button.label, 'button')
 
-                if isinstance(w, urwid.Columns):
-                    iterator(w)
-
-        iterator(widget)
+        cols = cols.contents[2][0]
+        self.assertTrue(isinstance(cols, urwid.Columns))
+        for i, t in enumerate(cols.contents):
+            self.assertEqual(t[0].text, f'text{i}')
 
     def test_multiple_text_attrs(self):
 
