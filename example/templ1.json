@@ -3,7 +3,7 @@
     "body": [
         {
             "class": "Text",
-            "markup": "('bg', 'first line')"
+            "markup": [ "bg", "first line" ]
         },
         {
             "class": "Button",
@@ -14,15 +14,15 @@
             "widget_list": [
                 {
                     "class": "Text",
-                    "markup": "('banner', 'third line, part 1/3')"
+                    "markup": [ "banner", "third line, part 1/3" ]
                 },
                 {
                     "class": "Text",
-                    "markup": "('streak', 'third line, part 2/3')"
+                    "markup": [ "streak", "third line, part 2/3" ]
                 },
                 {
                     "class": "Text",
-                    "markup": "('banner', 'third line, part 3/3')"
+                    "markup": [ "banner", "third line, part 3/3" ]
                 }
             ]
         }

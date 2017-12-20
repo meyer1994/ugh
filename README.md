@@ -47,5 +47,6 @@ loop.run()
 
 ## TODO
 - ~~Handle lists and tuples.~~
--- Better way to handle tuples.
+- ~~Better way to handle tuples.~~ (now it uses lists)
+- ~~Id system.~~ (needs polishing)
 - Handle callbacks (it breaks everything, for now).
