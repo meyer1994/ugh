@@ -155,6 +155,10 @@ class UghTest(unittest.TestCase):
             self.assertEqual(t[0].text, f'text{i}')
 
     def test_multiple_text_attrs(self):
+        '''
+        Tests the widget Text when using multiple markup attributes to it's
+        constructor.
+        '''
 
         with open('tests/test_multiple_text_attrs.json') as f:
             widgets_dict = json.load(f)
@@ -175,6 +179,35 @@ class UghTest(unittest.TestCase):
             ]
         )
         self.assertEqual(attrs, correct_attrs)
+
+    def test_ids(self):
+        '''
+        Tests the id management implementation of ugh.
+
+        Every widget with an id key in it's json should be included in the ids
+        dictionary.
+        '''
+
+        with open('tests/test_ids.json') as f:
+            widgets_dict = json.load(f)
+
+        widget = ugh.construct(widgets_dict)
+        print(ugh.ids)
+        self.assertTrue(1 in ugh.ids)
+        self.assertTrue(2 in ugh.ids)
+
+        i = 0
+        for w, _ in ugh.ids[1].contents:
+            if not isinstance(w, urwid.Columns):
+                self.assertEqual(w.label, f'btn{i}')
+                i += 1
+
+        i = 0
+        for w, _ in ugh.ids[2].contents:
+            self.assertEqual(w.label, f'btn{i}')
+            i += 1
+
+
 
 
 if __name__ == '__main__':

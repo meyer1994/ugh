@@ -9,6 +9,8 @@ import urwid
 # will hold the dictionary containing all the classes of the urwid module
 CLASSES = dict(inspect.getmembers(urwid, inspect.isclass))
 
+ids = {}
+
 
 def is_class(item):
     '''
@@ -129,7 +131,7 @@ def construct(items_dict):
 
     for key, item in items_dict.items():
 
-        if key == 'class':
+        if key in ('class', 'id'):
             continue
 
         # more classes to take care of
@@ -148,7 +150,15 @@ def construct(items_dict):
     if 'markup' in class_args:
         class_args['markup'] = handle_markup(class_args['markup'])
 
+
     bound_args = class_sig.bind(**class_args)
     bound_args.apply_defaults()
 
-    return the_class(*bound_args.args, **bound_args.kwargs)
+    constructed_class = the_class(*bound_args.args, **bound_args.kwargs)
+
+    global ids
+    if 'id' in items_dict:
+        i = items_dict['id']
+        ids[i] = constructed_class
+
+    return constructed_class

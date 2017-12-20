@@ -1,0 +1,25 @@
+{
+    "class": "Pile",
+    "widget_list": [
+        {
+            "class": "Columns",
+            "id": 1,
+            "widget_list": [
+                { "class": "Button", "label": "btn0" },
+                { "class": "Button", "label": "btn1" },
+                { "class": "Button", "label": "btn2" },
+                { "class": "Button", "label": "btn3" },
+                {
+                    "class": "Columns",
+                    "id": 2,
+                    "widget_list": [
+                        { "class": "Button", "label": "btn0" },
+                        { "class": "Button", "label": "btn1" },
+                        { "class": "Button", "label": "btn2" },
+                        { "class": "Button", "label": "btn3" }
+                    ]
+                }
+            ]
+        }
+    ]
+}
