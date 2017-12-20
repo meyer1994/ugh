@@ -1,3 +1,12 @@
+'''
+Test created to check if the widgets that should accept lists can also accept
+tuples in it's constructors.
+
+Yes, they can.
+But, for the markup in the urwid.Text widget, it won't work. The tuple of
+tuples needs to be converted into a list
+'''
+
 import urwid
 
 def exit_q(key):
