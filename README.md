@@ -3,7 +3,7 @@ Use JSON templates to create terminal UI with urwid
 
 [![Build Status](https://travis-ci.org/meyer1994/ugh.svg?branch=master)](https://travis-ci.org/meyer1994/ugh)
 
-PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses). Ok. Maybe the 'U' means 'urwid'...
+PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses).
 
 
 ## Usage:
@@ -12,24 +12,25 @@ PS: UGH does not mean anything. It is what I think when I need to use urwid (sti
 3. ????
 4. Profit?
 
-[ex0.py](example/ex0.py)
+[text.py](examples/text.py)
 ```python
 import urwid
 import json
 
 import ugh
 
-with open('templ0.json',) as f:
-    templ = json.load(f)
+'''
+Simple example used to show a centered Text widget written 'nice' with red
+background.
 
-t = ugh.construct(templ)
-loop = urwid.MainLoop(t)
-loop.run()
+Press 'q' to exit.
+'''
 
-```
+def exit_q(key):
+    if key in ('q', 'Q'):
+        raise urwid.ExitMainLoop()
 
-[templ0.json](example/templ0.json)
-```json
+json_string = '''
 {
     "class": "Filler",
     "body": {
@@ -39,14 +40,26 @@ loop.run()
             "markup": "nice",
             "align": "center"
         },
-        "attr_map": "bob"
+        "attr_map": "streak"
     }
 }
-```
+'''
 
+palette = [ ('streak', 'black', 'dark red') ]
+w_dict = json.loads(json_string)
+t = ugh.construct(w_dict)
+loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
+loop.run()
+```
 
 ## TODO
 - ~~Handle lists and tuples.~~
+<<<<<<< HEAD
 - ~~Better way to handle tuples.~~ (now it uses lists)
 - ~~Id system.~~ (needs polishing)
+=======
+
+   - ~~Better way to handle tuples.~~
+
+>>>>>>> dev
 - Handle callbacks (it breaks everything, for now).

@@ -32,32 +32,31 @@ def handle_list(item):
     '''
     Handles json objects that are lists.
 
-    JSON objects are quite simple. They are lists, or they are dicts. Simply.
-    For this project, there is also the need to threat tuples, which is done by
-    using literal_eval function.
-    Each object in a list is a dict, a list, or something else. So we need to
-    threat the list and dict ones and the literal_eval function takes care of
-    the rest (almost).
+    In urwid we have lists of things. Fortunately, urwid does not care too much
+    about the type of list. We can use tuples for (mostly) everything. That is
+    why this function threats all the lists and returns them all as tuples.
+    There is no need to worry, urwid converts them back to lists when we insert
+    them into some widget (see the acceptance.py in the tests folder).
 
     Args:
         item: Iterable of objects to be threated.
 
     Returns:
-        List of items after all the threating was done.
+        Tuple containing all the threated tuples. Note that this may have many
+        levels of tuples of tuples in it. It depends of your application.
     '''
 
     lst = []
     for obj in item:
-
+        # add widget
         if is_class(obj):
             lst.append(construct(obj))
-            continue
-
-        if isinstance(obj, list):
+        # add list
+        elif isinstance(obj, list):
             lst.append(handle_list(obj))
-            continue
-
-        lst.append(obj)
+        # add something else
+        else:
+            lst.append(obj)
 
     return tuple(lst)
 
@@ -91,8 +90,8 @@ def handle_markup(markup):
     # detect json list (tuple)
     if isinstance(markup, tuple):
         for i in markup:
-            # if there is any tuple inside, it meanst it should be a list of
-            # markups
+            # if there is any tuple inside, it means that it should be a list
+            # of markups
             if isinstance(i, tuple):
                 return list(markup)
 
@@ -121,6 +120,9 @@ def construct(items_dict):
     Returns:
         The top widget described in items_dict with it's inner widgets all
         created and included in itself.
+
+    Raises:
+        KeyError: When there is repeated IDs.
     '''
 
     the_class = items_dict['class']
@@ -151,14 +153,17 @@ def construct(items_dict):
         markup = class_args['markup']
         class_args['markup'] = handle_markup(markup)
 
-
+    # create constructor function
     bound_args = class_sig.bind(**class_args)
     bound_args.apply_defaults()
-
     constructed_class = the_class(*bound_args.args, **bound_args.kwargs)
 
+    # save into ids dict
     if 'id' in items_dict:
         i = items_dict['id']
+        # no repeated ids
+        if i in ids:
+            raise KeyError(f'Defined ID ({i}) already in use by {ids[i]}')
         ids[i] = constructed_class
 
     return constructed_class

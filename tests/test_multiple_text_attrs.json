@@ -1,8 +1,0 @@
-{
-    "class": "Text",
-    "markup": [
-        [ "some_attr", "nice0 " ],
-        "nice1 ",
-        [ "other_attr", "nice2" ]
-    ]
-}
