@@ -12,7 +12,7 @@ PS: UGH does not mean anything. It is what I think when I need to use urwid (sti
 3. ????
 4. Profit?
 
-[ex0.py](examples/text.py)
+[text.py](examples/text.py)
 ```python
 import urwid
 import json
