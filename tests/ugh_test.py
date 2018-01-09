@@ -3,7 +3,7 @@ import json
 
 import urwid
 
-from ugh import ugh
+import ugh
 
 
 class UghTest(unittest.TestCase):
