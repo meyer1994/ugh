@@ -3,7 +3,7 @@ Use JSON templates to create terminal UI with urwid
 
 [![Build Status](https://travis-ci.org/meyer1994/ugh.svg?branch=master)](https://travis-ci.org/meyer1994/ugh)
 
-PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses). Ok. Maybe the 'U' means 'urwid'...
+PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses).
 
 
 ## Usage:
@@ -50,10 +50,11 @@ w_dict = json.loads(json_string)
 t = ugh.construct(w_dict)
 loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
 loop.run()
-
 ```
 
 ## TODO
 - ~~Handle lists and tuples.~~
--- Better way to handle tuples.
+
+   - ~~Better way to handle tuples.~~
+
 - Handle callbacks (it breaks everything, for now).
