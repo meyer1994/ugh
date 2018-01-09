@@ -27,7 +27,7 @@ Press 'q' to exit.
 '''
 
 def exit_q(key):
-    if key == 'q':
+    if key in ('q', 'Q'):
         raise urwid.ExitMainLoop()
 
 json_string = '''
