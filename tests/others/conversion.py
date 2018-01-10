@@ -3,7 +3,7 @@ Test created to see if a tuple inserted in the place of a list would be
 converted to list after it is passed to the constructor.
 
 Yes, it will.
-That is a good behaviour, at least I think.
+That is a good behavior, at least I think.
 '''
 
 import urwid

@@ -14,7 +14,7 @@ class WidgetTest(unittest.TestCase):
 
         Simple widgets are widgets that do not need other widgets for it to be
         created. For example: Text and Button widgets. A Filler, List etc.
-        widgets need some widget to be passed in the cosntructor for it to be
+        widgets need some widget to be passed in the constructor for it to be
         created.
         '''
 
