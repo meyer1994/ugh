@@ -10,9 +10,11 @@ attributes with multiple widgets.
 Press 'q' to exit.
 '''
 
+
 def exit_q(key):
     if key in ('q', 'Q'):
         raise urwid.ExitMainLoop()
+
 
 json_string = '''
 {
@@ -50,7 +52,7 @@ json_string = '''
 palette = [
     ('banner', 'black', 'light gray'),
     ('streak', 'black', 'dark red'),
-    ('bg', 'black', 'dark blue') ]
+    ('bg', 'black', 'dark blue')]
 
 w_dict = json.loads(json_string)
 t = ugh.construct(w_dict)

@@ -10,9 +10,11 @@ background.
 Press 'q' to exit.
 '''
 
+
 def exit_q(key):
     if key in ('q', 'Q'):
         raise urwid.ExitMainLoop()
+
 
 json_string = '''
 {
@@ -29,7 +31,7 @@ json_string = '''
 }
 '''
 
-palette = [ ('streak', 'black', 'dark red') ]
+palette = [('streak', 'black', 'dark red')]
 w_dict = json.loads(json_string)
 t = ugh.construct(w_dict)
 loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
