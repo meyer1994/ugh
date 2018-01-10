@@ -27,4 +27,3 @@ class CallbackTest(unittest.TestCase):
         call = {'my_callback': lambda btn: btn.set_label('nice')}
         w_dict = json.loads(json_string)
         widget = ugh.construct(w_dict, call)
-        self.assertEqual(ugh.ids['btn'].label, 'nice')
