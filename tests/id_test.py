@@ -6,7 +6,7 @@ import urwid
 import ugh
 
 
-class IdTest(object):
+class IdTest(unittest.TestCase):
 
     def test_ids(self):
         '''
@@ -47,8 +47,8 @@ class IdTest(object):
         w_dict = json.loads(json_string)
         widget = ugh.construct(w_dict)
         print(ugh.ids)
-        self.assertTrue(1 in ugh.ids)
-        self.assertTrue(2 in ugh.ids)
+        self.assertIn(1, ugh.ids)
+        self.assertIn(2, ugh.ids)
 
         i = 0
         for w, _ in ugh.ids[1].contents:
@@ -60,3 +60,29 @@ class IdTest(object):
         for w, _ in ugh.ids[2].contents:
             self.assertEqual(w.label, f'btn{i}')
             i += 1
+
+    def test_repeated_ids(self):
+        '''
+        Tests if the repeated ids raises KeyError
+        '''
+
+        json_string1 = '''
+        {
+            "class": "Text",
+            "id": "same_id",
+            "markup": "nice"
+        }
+        '''
+        json_string2 = '''
+        {
+            "class": "Text",
+            "id": "same_id",
+            "markup": "not nice"
+        }
+        '''
+
+        w_dict1 = json.loads(json_string1)
+        w_dict2 = json.loads(json_string2)
+        text1 = ugh.construct(w_dict1)
+        with self.assertRaises(KeyError):
+            ugh.construct(w_dict2)

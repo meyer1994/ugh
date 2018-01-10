@@ -52,10 +52,10 @@ class WidgetTest(unittest.TestCase):
         b2 = w_dict['button2']
 
         # types
-        self.assertTrue(isinstance(t1, urwid.Text))
-        self.assertTrue(isinstance(t2, urwid.Text))
-        self.assertTrue(isinstance(b1, urwid.Button))
-        self.assertTrue(isinstance(b2, urwid.Button))
+        self.assertIsInstance(t1, urwid.Text)
+        self.assertIsInstance(t2, urwid.Text)
+        self.assertIsInstance(b1, urwid.Button)
+        self.assertIsInstance(b2, urwid.Button)
 
         # properties
         self.assertEqual(t1.text, 'nice')
@@ -81,7 +81,7 @@ class WidgetTest(unittest.TestCase):
         text = ugh.construct(w_dict)
 
         # type
-        self.assertTrue(isinstance(text, urwid.Text))
+        self.assertIsInstance(text, urwid.Text)
 
         # properties
         self.assertEqual(text.text, 'nice')
@@ -144,16 +144,16 @@ class WidgetTest(unittest.TestCase):
         placeholder = ugh.construct(w_dict['placeholder'])
 
         # types
-        self.assertTrue(isinstance(filler, urwid.Filler))
-        self.assertTrue(isinstance(filler.original_widget, urwid.AttrMap))
-        self.assertTrue(isinstance(filler_text, urwid.Text))
+        self.assertIsInstance(filler, urwid.Filler)
+        self.assertIsInstance(filler.original_widget, urwid.AttrMap)
+        self.assertIsInstance(filler_text, urwid.Text)
 
-        self.assertTrue(isinstance(padding, urwid.Padding))
-        self.assertTrue(isinstance(padding.original_widget, urwid.AttrMap))
-        self.assertTrue(isinstance(padding_text, urwid.Text))
+        self.assertIsInstance(padding, urwid.Padding)
+        self.assertIsInstance(padding.original_widget, urwid.AttrMap)
+        self.assertIsInstance(padding_text, urwid.Text)
 
-        self.assertTrue(isinstance(placeholder, urwid.WidgetPlaceholder))
-        self.assertTrue(isinstance(placeholder.original_widget, urwid.Button))
+        self.assertIsInstance(placeholder, urwid.WidgetPlaceholder)
+        self.assertIsInstance(placeholder.original_widget, urwid.Button)
 
         # properties
         self.assertEqual(filler_text.text, 'nice')
@@ -186,7 +186,7 @@ class WidgetTest(unittest.TestCase):
 
         # types
         for w, _ in pile.contents:
-            self.assertTrue(isinstance(w, urwid.Text))
+            self.assertIsInstance(w, urwid.Text)
 
         # properties
         i = 0
@@ -239,21 +239,21 @@ class WidgetTest(unittest.TestCase):
         pile = ugh.construct(w_dict)
 
         cols = pile.contents[0][0]
-        self.assertTrue(isinstance(cols, urwid.Columns))
+        self.assertIsInstance(cols, urwid.Columns)
 
         text = cols.contents[0][0]
-        self.assertTrue(isinstance(text, urwid.Text))
+        self.assertIsInstance(text, urwid.Text)
         txt = 'text0text1text2'
         self.assertEqual(text.text, txt)
         text_attrs = (txt, [("attr0", 5), (None, 5), ("attr2", 5)])
         self.assertEqual(text.get_text(), text_attrs)
 
         button = cols.contents[1][0]
-        self.assertTrue(isinstance(button, urwid.Button))
+        self.assertIsInstance(button, urwid.Button)
         self.assertEqual(button.label, 'button')
 
         cols = cols.contents[2][0]
-        self.assertTrue(isinstance(cols, urwid.Columns))
+        self.assertIsInstance(cols, urwid.Columns)
         for i, t in enumerate(cols.contents):
             self.assertEqual(t[0].text, f'text{i}')
 
