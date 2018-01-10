@@ -2,7 +2,7 @@ from setuptools import find_packages
 
 setup(
     name='ugh',
-    version='0.1.0.b1',
+    version='0.1.0',
     description='Use JSON templates to create terminal UI with urwid.',
     url='https://github.com/meyer1994/ugh',
     author='João Vicente Meyer',
@@ -15,9 +15,9 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.6-dev',
         'Programming Language :: Python :: 3.7-dev',
-        'Programming Language :: Python :: nightly' ],
+        'Programming Language :: Python :: nightly'],
     keywords='ugh urwid terminal curses development ui interface',
-    packages=find_packages(exclude=[ 'tests' ]),
-    install_requires=[ 'urwid' ],
+    packages=find_packages(exclude=['tests']),
+    install_requires=['urwid'],
     python_requires='>=3.6',
     )

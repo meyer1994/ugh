@@ -9,12 +9,14 @@ tuples needs to be converted into a list
 
 import urwid
 
+
 def exit_q(key):
     if key in ('q', 'Q'):
         raise urwid.ExitMainLoop()
 
-t = [ urwid.Text(str(i) * 3) for i in range(5) ]
-ts = [ ('weight', .5, i) for i in t ]
+
+t = [urwid.Text(str(i) * 3) for i in range(5)]
+ts = [('weight', .5, i) for i in t]
 ts = tuple(ts)
 
 print(ts)

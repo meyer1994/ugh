@@ -12,6 +12,11 @@ PS: UGH does not mean anything. It is what I think when I need to use urwid (sti
 3. ????
 4. Profit?
 
+---
+
+Simple example used to show a centered Text widget written 'nice' with red
+background.
+
 [text.py](examples/text.py)
 ```python
 import urwid
@@ -19,16 +24,11 @@ import json
 
 import ugh
 
-'''
-Simple example used to show a centered Text widget written 'nice' with red
-background.
-
-Press 'q' to exit.
-'''
 
 def exit_q(key):
     if key in ('q', 'Q'):
         raise urwid.ExitMainLoop()
+
 
 json_string = '''
 {
@@ -45,7 +45,7 @@ json_string = '''
 }
 '''
 
-palette = [ ('streak', 'black', 'dark red') ]
+palette = [('streak', 'black', 'dark red')]
 w_dict = json.loads(json_string)
 t = ugh.construct(w_dict)
 loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
@@ -57,4 +57,4 @@ loop.run()
 
    - ~~Better way to handle tuples.~~
 
-- Handle callbacks (it breaks everything, for now).
+- ~~Handle callbacks (it breaks everything, for now).~~
