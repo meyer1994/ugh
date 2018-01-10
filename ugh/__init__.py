@@ -1,4 +1,5 @@
 import inspect
+import re
 
 import urwid
 
@@ -25,7 +26,26 @@ def is_class(item):
     return isinstance(item, dict) and 'class' in item
 
 
-def handle_list(item):
+def is_callback(param_name):
+    '''
+    Checks if the item is an callback.
+
+    Luckily for us, urwid team has a pattern of always putting the callbacks
+    parameters in the constructors as 'on_press' or 'on_state_changed',
+    'on_something'. Then, we just need to check if in the beginning of the
+    string is the pattern 'on_'. When it has, we have a callback.
+
+    Args:
+        param_name: String containing the name of the parameter.
+
+    Returns:
+        True if there is 'on_' in the beginning of the string. False otherwise.
+    '''
+
+    return bool(re.match(r'(^on_)', param_name))
+
+
+def handle_list(item, callbacks):
     '''
     Handles json objects that are lists.
 
@@ -37,6 +57,8 @@ def handle_list(item):
 
     Args:
         item: Iterable of objects to be threated.
+        callbacks: dict of callbacks. As our list may have other widgets that
+            uses callbacks, we need to pass them as well.
 
     Returns:
         Tuple containing all the threated tuples. Note that this may have many
@@ -47,10 +69,10 @@ def handle_list(item):
     for obj in item:
         # add widget
         if is_class(obj):
-            lst.append(construct(obj))
+            lst.append(construct(obj, callbacks))
         # add list
         elif isinstance(obj, list):
-            lst.append(handle_list(obj))
+            lst.append(handle_list(obj, callbacks))
         # add something else
         else:
             lst.append(obj)
@@ -95,30 +117,36 @@ def handle_markup(markup):
     return markup
 
 
-def construct(items_dict):
+def construct(items_dict, callbacks={}):
     '''
     Constructs the classes described in the dict.
 
     It will create all the classes described in the dictionary, normally
-    obtained from a .json. It does it in a recursive way. Which means,
-    everytime it finds a new dict in the items, with the 'class' key, it will
+    obtained from a json. It does it in a recursive way. Which means,
+    every time it finds a new dict in the items, with the 'class' key, it will
     call itself again with this, just found, dict as it's parameter.
 
     Note:
         The attributes used to set different markups for the widgets, specially
-        the Text widget, are supposed to be already defined in a 'pallete' that
+        the Text widget, are supposed to be already defined in a 'palette' that
         is passed to the main loop. If it is not defined, the program WILL NOT
         fail, it will simply execute without the attributes. This is an urwid
         strategy.
+        We do not accept 'user_data' to be used in the json descriptions
+        because it's treatment would be of bigger complexity than the project
+        itself. So, if you want to use some more fancy callbacks with many
+        parameters etc.  you should use urwid.connect_signal for that.
 
     Args:
         items_dict: dict of items to be created.
+        callbacks: dict of callbacks. The keys are the names of the callbacks.
 
     Returns:
         The top widget described in items_dict with it's inner widgets all
         created and included in itself.
 
     Raises:
+        ValuerError: When 'user_data' parameters have been set.
         KeyError: When there is repeated IDs.
     '''
 
@@ -130,17 +158,30 @@ def construct(items_dict):
 
     for key, item in items_dict.items():
 
+        # same implementation as android's setOnClickListener
+        if key == 'user_data':
+            raise ValueError('user_data not implemented. If you need to use ' /
+                             'some more sophisticated callback, please, use ' /
+                             'urwid.connect_signal')
+
+        # class is threated before this loop
+        # id is threated after this loop
         if key in ('class', 'id'):
             continue
 
         # more classes to take care of
         if is_class(item):
-            class_args[key] = construct(item)
+            class_args[key] = construct(item, callbacks)
+            continue
+
+        # callbacks
+        if is_callback(key):
+            class_args[key] = callbacks[item]
             continue
 
         # threat lists
         if isinstance(item, list):
-            class_args[key] = handle_list(item)
+            class_args[key] = handle_list(item, callbacks)
             continue
 
         class_args[key] = item
