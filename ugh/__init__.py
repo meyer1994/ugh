@@ -160,8 +160,8 @@ def construct(items_dict, callbacks={}):
 
         # same implementation as android's setOnClickListener
         if key == 'user_data':
-            raise ValueError('user_data not implemented. If you need to use ' /
-                             'some more sophisticated callback, please, use ' /
+            raise ValueError('user_data not implemented. If you need to use '
+                             'some more sophisticated callback, please, use '
                              'urwid.connect_signal')
 
         # class is threated before this loop
