@@ -11,12 +11,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: GPL-3.0 License',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.6-dev',
-        'Programming Language :: Python :: 3.7-dev',
-        'Programming Language :: Python :: nightly'],
+        'Topic :: Software Development :: Build Tools'],
     keywords='ugh urwid terminal curses development ui interface',
     packages=find_packages(exclude=['tests']),
     install_requires=['urwid'],
