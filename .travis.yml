@@ -16,4 +16,4 @@ script:
   - "python -m unittest tests -vb"
 
 after_success:
-  - "- bash < (curl -s https://codecov.io/bash)"
+  - "bash < (curl -s https://codecov.io/bash)"
