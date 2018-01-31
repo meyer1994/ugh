@@ -1,4 +1,6 @@
-language: python
+sudo: "false"  # it is supposed to make builds faster
+
+language: "python"
 python:
   - "3.6"
   - "3.6-dev"  # 3.6 development branch
@@ -12,3 +14,6 @@ install:
 # command to run tests
 script:
   - "python -m unittest tests -vb"
+
+after_success:
+  - "- bash < (curl -s https://codecov.io/bash)"
