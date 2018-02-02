@@ -1,4 +1,6 @@
-language: python
+sudo: "false"  # it is supposed to make builds faster
+
+language: "python"
 python:
   - "3.6"
   - "3.6-dev"  # 3.6 development branch
@@ -8,7 +10,11 @@ python:
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
+  - "pip install codecov"
 
 # command to run tests
 script:
-  - "python -m unittest tests -vb"
+  - "coverage run -m unittest tests -vb"
+
+after_success:
+  - "codecov"
