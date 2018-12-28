@@ -1,20 +1,21 @@
-sudo: "false"  # it is supposed to make builds faster
+sudo: false
 
-language: "python"
+language: python
 python:
+  - "3.5"
   - "3.6"
   - "3.6-dev"  # 3.6 development branch
   - "3.7-dev"  # 3.7 development branch
-  - "nightly"
 
 # command to install dependencies
 install:
-  - "pip install -r requirements.txt"
-  - "pip install codecov"
+  - pip install -r requirements.txt
 
 # command to run tests
 script:
-  - "coverage run -m unittest tests -vb"
+  - coverage run -m unittest discover -vb tests
 
 after_success:
-  - "codecov"
+  - coverage report -m
+  - pip install codecov
+  - codecov
