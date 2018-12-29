@@ -9,7 +9,7 @@ compile:
 
 # Run tests
 test:
-	coverage run -m unittest discover $(TEST_DIR)
+	coverage run -m unittest discover -vb $(TEST_DIR)
 
 
 # Show tests coverage
