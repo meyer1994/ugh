@@ -10,4 +10,9 @@ def parser(xml):
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
-    return [urwid.Text(e.text.strip()) for e in root]
+    results = []
+    for elem in root:
+        text = elem.text.strip()
+        item = urwid.Text(text, **elem.attrib)
+        results.append(item)
+    return results
