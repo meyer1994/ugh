@@ -15,3 +15,8 @@ test:
 # Show tests coverage
 coverage: test
 	coverage report -mi
+
+
+# Lint code
+lint:
+	flake8 ugh/ tests/ --statistics
