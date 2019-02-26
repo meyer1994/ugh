@@ -24,7 +24,7 @@ class TestWidgets(TestCase):
 
     def test_complex(self):
         ''' Generates complex widgets '''
-        xml = '''
+        xml = r'''
         <ugh>
             <Pile>
                 <Button label="Button"/>

@@ -15,4 +15,4 @@ class TestRoot(TestCase):
     def test_raises(self):
         ''' Raises error when root is not <ugh> '''
         with self.assertRaises(NotFoundErr):
-            ugh('<Button></Button>')
+            ugh(r'<Button></Button>')
