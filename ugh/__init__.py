@@ -1,5 +1,5 @@
 from ugh.parser import parser
 
 
-def ugh(xml):
-    return parser(xml)
+def ugh(xml, **kwargs):
+    return parser(xml, **kwargs)
