@@ -60,19 +60,3 @@ class TestWidgets(TestCase):
         text = cols.contents[0][0]
         self.assertIsInstance(text, urwid.Text)
         self.assertEqual(text.text, 'Column')
-
-    def test_callback(self):
-        ''' Correctly assigns callbacks '''
-        def callback(): pass
-
-        xml = r'''
-        <ugh>
-            <Button label="Test" on_press="py:callback" user_data="True"/>
-        </ugh>
-        '''
-        result = ugh.parse(xml, callback=callback)[0]
-        self.assertIsInstance(result, urwid.Button)
-
-        # god this part is ugly
-        self.assertIs(result._urwid_signals['click'][0][1], callback)
-        self.assertEquals(result._urwid_signals['click'][0][2], 'True')
