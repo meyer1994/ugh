@@ -4,7 +4,7 @@ from xml.dom import NotFoundErr
 from ugh.classes import get_class
 
 
-def parser(xml, **kwargs):
+def parse(xml, **kwargs):
     '''
     Parses the XML into urwid widgets.
 

@@ -2,21 +2,21 @@ from unittest import TestCase
 
 import urwid
 
-from ugh import ugh
+import ugh
 
 
 class TestWidgets(TestCase):
     def test_text(self):
         ''' Generate text widget '''
         xml = r'<ugh> <Text markup="Test"/> </ugh>'
-        result = ugh(xml)[0]
+        result = ugh.parse(xml)[0]
         self.assertIsInstance(result, urwid.Text)
         self.assertEqual(result.text, 'Test')
 
     def test_attributes(self):
         ''' Attributes are created correctly '''
         xml = r'<ugh> <Text markup="Test" align="left" wrap="any"/> </ugh>'
-        result = ugh(xml)[0]
+        result = ugh.parse(xml)[0]
         self.assertIsInstance(result, urwid.Text)
         self.assertEqual(result.align, 'left')
         self.assertEqual(result.wrap, 'any')
@@ -35,7 +35,7 @@ class TestWidgets(TestCase):
             </Pile>
         </ugh>
         '''
-        result = ugh(xml)[0]
+        result = ugh.parse(xml)[0]
 
         # pile
         self.assertIsInstance(result, urwid.Pile)
@@ -64,16 +64,15 @@ class TestWidgets(TestCase):
     def test_callback(self):
         ''' Correctly assigns callbacks '''
         def callback(): pass
-        data = ['some', 'list']
 
         xml = r'''
         <ugh>
-            <Button label="Test" on_press="callback" user_data='data'/>
+            <Button label="Test" on_press="py:callback" user_data="py:True"/>
         </ugh>
         '''
-        result = ugh(xml, callback=callback, data=data)[0]
+        result = ugh.parse(xml, callback=callback)[0]
         self.assertIsInstance(result, urwid.Button)
 
         # god this part is ugly
         self.assertIs(result._urwid_signals['click'][0][1], callback)
-        self.assertIs(result._urwid_signals['click'][0][2], data)
+        self.assertTrue(result._urwid_signals['click'][0][2])
