@@ -3,10 +3,7 @@ import inspect
 import urwid
 
 # Dict with all classes of urwid
-CLASSES = {}
-for name, obj in inspect.getmembers(urwid):
-    if inspect.isclass(obj):
-        CLASSES[name] = obj
+CLASSES = dict(inspect.getmembers(urwid, inspect.isclass))
 
 
 def get_class(class_name):
