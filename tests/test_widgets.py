@@ -15,27 +15,12 @@ class TestWidgets(TestCase):
 
     def test_attributes(self):
         ''' Attributes are created correctly '''
-        xml = r'<ugh> <Text markup="Test" align="left" wrap="any"/></ugh>'
+        xml = r'<ugh> <Text markup="Test" align="left" wrap="any"/> </ugh>'
         result = ugh(xml)[0]
         self.assertIsInstance(result, urwid.Text)
         self.assertEqual(result.align, 'left')
         self.assertEqual(result.wrap, 'any')
         self.assertEqual(result.text, 'Test')
-
-    def test_values(self):
-        ''' Should convert attributes to python values '''
-        xml = r'''
-        <ugh>
-            <Button label="text" on_press="func" user_data="True"/>
-        </ugh>
-        '''
-        kwargs = {
-            'text': 'Some Text',
-            'func': lambda t: None
-        }
-        result = ugh(xml, **kwargs)[0]
-        self.assertIsInstance(result, urwid.Button)
-        self.assertEqual(result.label, 'Some Text')
 
     def test_complex(self):
         ''' Generates complex widgets '''
@@ -52,6 +37,10 @@ class TestWidgets(TestCase):
         '''
         result = ugh(xml)[0]
 
+        # pile
+        self.assertIsInstance(result, urwid.Pile)
+        self.assertEqual(len(result.contents), 3)
+
         # button
         button = result.contents[0][0]
         self.assertIsInstance(button, urwid.Button)
@@ -65,6 +54,7 @@ class TestWidgets(TestCase):
         # columns
         cols = result.contents[2][0]
         self.assertIsInstance(cols, urwid.Columns)
+        self.assertEqual(len(cols.contents), 1)
 
         # columns-text
         text = cols.contents[0][0]
@@ -83,6 +73,7 @@ class TestWidgets(TestCase):
         '''
         result = ugh(xml, callback=callback, data=data)[0]
         self.assertIsInstance(result, urwid.Button)
+
         # god this part is ugly
         self.assertIs(result._urwid_signals['click'][0][1], callback)
         self.assertIs(result._urwid_signals['click'][0][2], data)
