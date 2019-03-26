@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 from xml.dom import NotFoundErr
 
-from ugh.classes import get_class
+from ugh.classes import handler
 
 
 def parse(xml, **kwargs):
@@ -20,33 +20,11 @@ def parse(xml, **kwargs):
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
-    return [create_widget(e, kwargs) for e in root]
+    root  = handle_attributes(root, kwargs)
+    return [handler(e) for e in root]
 
 
-def create_widget(elem, data={}):
-    '''
-    Recursively creates widgets from the passed XML tree element.
-
-    Args:
-        elem: XML Element from python's api.
-        data: Dict of arguments to be used when passing data to the widgets.
-        The 'py:' prefied attributes.
-
-    Returns:
-        The top element converted to the respective urwid object.
-    '''
-    cls = get_class(elem.tag)
-    args = handle_attributes(elem.attrib, data)
-
-    # no children
-    if len(elem) == 0:
-        return cls(**args)
-
-    children = [create_widget(e, data) for e in elem]
-    return cls(children, **args)
-
-
-def handle_attributes(attrs, data):
+def handle_attributes(root, data):
     '''
     Checks `attrs` for python keywords and values in `data`.
 
@@ -65,13 +43,17 @@ def handle_attributes(attrs, data):
         `attrs` values. The list will be placed in the place of the string
         `py:key`.
     '''
-    for key, val in attrs.items():
+    for key, val in root.attrib.items():
         # check for the value pattern in strings
         pyval = re.findall(r'^py:(.+)', val)
         if len(pyval) == 1:
-            attrs[key] = handle_value(pyval[0], data)
+            root.attrib[key] = handle_value(pyval[0], data)
 
-    return attrs
+    # recursively apply to all children
+    for i, _ in enumerate(root):
+        handle_attributes(root[i], data)
+
+    return root
 
 
 def handle_value(val, data):

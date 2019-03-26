@@ -2,25 +2,46 @@ import inspect
 
 import urwid
 
-# Dict with all classes of urwid
-CLASSES = dict(inspect.getmembers(urwid, inspect.isclass))
 
-
-def get_class(class_name):
+def handler(elem):
     '''
-    Gets the respective class.
+    Base handler for widgets creation.
 
-    Args:
-        class_name: Name of class.
-
-    Returns:
-        Respective class from urwid.
-
-    Raises:
-        KeyError when class is not an uriwd class.
+    This function was created to
     '''
-    if class_name not in CLASSES:
-        error = 'Class %s is not an urwid class' % class_name
-        raise KeyError(error)
+    if elem.tag in HANDLERS:
+        cls = HANDLERS[elem.tag]
+        return cls(elem)
 
-    return CLASSES[class_name]
+    cls = getattr(urwid, elem.tag)
+    if len(elem) == 0:
+        return cls(**elem.attrib)
+
+    children = [handler(e) for e in elem]
+    return cls(children, **elem.attrib)
+
+
+def filler_handler(elem):
+    '''
+    Handles `Filler` widget special case.
+
+    Differently from most widgets, the `Filler` widget accepts a single widget
+    as its first parameter. Not a list of widgets.
+    '''
+    child = handler(elem[0])
+    return urwid.Filler(child, **elem.attrib)
+
+
+def text_handler(elem):
+    '''
+    Handles `Text` special case.
+    '''
+    if 'markup' in elem.attrib:
+        return urwid.Text(**elem.attrib)
+    return urwid.Text(elem.text, **elem.attrib)
+
+
+HANDLERS = {
+    'Filler': filler_handler,
+    'Text': text_handler,
+}

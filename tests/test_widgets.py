@@ -60,3 +60,16 @@ class TestWidgets(TestCase):
         text = cols.contents[0][0]
         self.assertIsInstance(text, urwid.Text)
         self.assertEqual(text.text, 'Column')
+
+    def test_filler(self):
+        ''' Returns correct Filler widget '''
+        xml = r'''
+        <ugh>
+            <Filler>
+                <Text markup="Nice" />
+            </Filler>
+        </ugh>
+        '''
+        result = ugh.parse(xml)[0]
+        self.assertIsInstance(result, urwid.Filler)
+        repr(result)
