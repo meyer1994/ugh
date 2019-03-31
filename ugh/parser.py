@@ -7,21 +7,20 @@ from xml.dom import NotFoundErr
 from ugh.classes import handler
 
 
-def parse(xml, **kwargs):
+def parse(xml, data={}):
     '''
     Parses the XML into urwid widgets.
 
     Args:
         xml: XML string to be parsed.
-        callbacks: List of callbacks to be used in the template. It will be
-            converted to a dict of names and functions.
+        callbacks: a dict containing the data and callbacks to be used in the
+        template.
     '''
     root = ET.fromstring(xml)
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
-    root  = handle_attributes(root, kwargs)
-    return [handler(e) for e in root]
+    return [create_widget(e, data) for e in root]
 
 
 def handle_attributes(root, data):

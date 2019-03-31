@@ -1,26 +1,24 @@
 # UGH
-Use JSON templates to create terminal UI with urwid
+Use XML templates to create terminal UI with urwid
 
 [![Build Status](https://travis-ci.org/meyer1994/ugh.svg?branch=master)](https://travis-ci.org/meyer1994/ugh)
+
 
 PS: UGH does not mean anything. It is what I think when I need to use urwid (still better than curses).
 
 
 ## Usage:
-1. Define the `class` attribute with the name of the class you want to use;
-2. Define the variables of the constructor as if you were coding it normally;
-3. ????
-4. Profit?
+1. Create an XML where the tags are names of urwid classes;
+2. Define attributes to the tags based on the constructor parameters;
+3. ?
+4. Profit!
 
 ---
 
-Simple example used to show a centered Text widget written 'nice' with red
-background.
+## Hello world
 
-[text.py](examples/text.py)
 ```python
 import urwid
-import json
 
 import ugh
 
@@ -30,25 +28,16 @@ def exit_q(key):
         raise urwid.ExitMainLoop()
 
 
-json_string = '''
-{
-    "class": "Filler",
-    "body": {
-        "class": "AttrMap",
-        "w": {
-            "class": "Text",
-            "markup": "nice",
-            "align": "center"
-        },
-        "attr_map": "streak"
-    }
-}
+text = urwid.Text(markup="Hello")
+
+xml = r'''
+<ugh>
+    <Filler body="py:text">
+</ugh>
 '''
 
-palette = [('streak', 'black', 'dark red')]
-w_dict = json.loads(json_string)
-t = ugh.construct(w_dict)
-loop = urwid.MainLoop(t, palette, unhandled_input=exit_q)
+root = ugh.parse(xml, text=text)[0]
+loop = urwid.MainLoop(root, unhandled_input=exit_q)
 loop.run()
 ```
 

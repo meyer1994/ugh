@@ -24,7 +24,10 @@ class TestData(TestCase):
             <Button label="B" on_press="py:callback" user_data="py:{'': '2'}"/>
         </ugh>
         '''
-        results = ugh.parse(xml, callback=callback)
+        data = {
+            'callback': callback
+        }
+        results = ugh.parse(xml, data)
         expected = [
             True,
             'False',
