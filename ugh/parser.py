@@ -1,85 +1,76 @@
-import re
-import ast
 import xml.etree.ElementTree as ET
 
+from ast import literal_eval
 from xml.dom import NotFoundErr
 
-from ugh.classes import handler, IDS
+from ugh.classes import handler, ids_store
 
 
-def parse(xml, data={}):
+CALLBACK_ATTRS = {
+    'on_press',         # Button
+    'on_state_change'   # CheckBox, RadioButton
+}
+
+
+def parse(xml, callbacks=[], data={}):
     '''
     Parses the XML into urwid widgets.
 
     Args:
         xml: XML string to be parsed.
-        data: Dict used to store all the data used in the
     '''
-    IDS.clear()
     root = ET.fromstring(xml)
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
-    handle_attributes(root, data)
+    # Resets ID store
+    ids_store.clear()
+
+    # Transform into a dict of callbacks wheere the keys are the names of
+    # passed functions
+    callbacks = {f.__name__: f for f in callbacks}
+    handle_attributes(root, callbacks, data)
+
     return [handler(e) for e in root]
 
 
-def handle_attributes(root, data):
+def handle_attributes(root, callbacks, data):
     '''
-    Checks `attrs` for python keywords and values in `data`.
+    Apply the callbacks to the XML structure.
 
-    It will search the text values of the attributes by checking for the
-    existence of the 'py:' prefix. It uses regex to do so. It will convert
-    everything after the 'py:' to some value using `handle_values`.
+    It simply checks for the attributes that start with 'on_'. Thankfully,
+    urwid's devs always use the 'on_' prefix when dealing with callbacks.
+
+    As for the data, if there is a callback, it will check for the 'user_data'
+    attribute. If it exists, it will `literal_eval` the string. If it does not
+    exists, it will pass the data dict as the value.
 
     Args:
-        attrs: A dict with name of the attributes as key and strings as values.
-        data: Dict of kwargs from the call to `ugh.parse`.
+        root: Root object of the XML document.
+        callbacks: Dict of callbacks to use.
+        data: Dict of data to use.
 
     Returns:
-        Dict with the attributes names as keys and the corresponding objects
-        from kwargs placed in its respective place. Which means: if there is a
-        `'key': [1, 2, 3]` in `data` and a value of `py:key` in some of the
-        `attrs` values. The list will be placed in the place of the string
-        `py:key`.
-    '''
-    for key, val in root.attrib.items():
-        # check for the value pattern in strings
-        pyval = re.findall(r'^py:(.+)', val)
-        if len(pyval) == 1:
-            root.attrib[key] = handle_value(pyval[0], data)
-
-    # recursively apply to all children
-    for i, _ in enumerate(root):
-        handle_attributes(root[i], data)
-
-    return root
-
-
-def handle_value(val, data):
-    '''
-    Tries to convert the value.
-
-    It will first try to convert `val` as a literal using `ast.literal_eval`.
-    If it fails, it will use `val` as key on `data`.
-
-    Args:
-        val: Value to convert, as string.
-        data: Dict of items to use if `literal_eval` fails.
-
-    Returns:
-        Converted value.
+        Root object, modified. The modification will happen in place.
 
     Raises:
-        ValueError if `val` could not be converted to literal and it was not
-        present in `data`.
+        KeyError when the callback was not passed in the dict.
     '''
-    try:
-        return ast.literal_eval(val)
-    except ValueError:
-        pass
+    for child in root:
+        for attr in list(child.attrib.keys()):
 
-    if val in data:
-        return data[val]
+            # Handle callbacks
+            if attr.startswith('on_'):
+                callback_name = child.get(attr)
+                child.attrib[attr] = callbacks[callback_name]
 
-    raise ValueError('Could not convert the value "%s" passed' % val)
+                # Handle data
+                if 'user_data' in child.attrib:
+                    # Evaluates
+                    value = child.get('user_data')
+                    child.attrib['user_data'] = literal_eval(value)
+                else:
+                    child.attrib['user_data'] = data
+
+        handle_attributes(child, callbacks, data)
+    return root

@@ -8,7 +8,7 @@ import ugh
 class TestWidgets(TestCase):
     def test_text(self):
         ''' Generate text widget '''
-        xml = r'<ugh> <Text markup="Test"/> </ugh>'
+        xml = r'<ugh> <Text markup="Test" /> </ugh>'
         result = ugh.parse(xml)[0]
         self.assertIsInstance(result, urwid.Text)
         self.assertEqual(result.text, 'Test')
