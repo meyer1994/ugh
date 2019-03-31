@@ -20,7 +20,8 @@ def parse(xml, data={}):
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
-    return [create_widget(e, data) for e in root]
+    handle_attributes(root, data)
+    return [handler(e) for e in root]
 
 
 def handle_attributes(root, data):

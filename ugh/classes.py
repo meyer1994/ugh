@@ -32,16 +32,6 @@ def filler_handler(elem):
     return urwid.Filler(child, **elem.attrib)
 
 
-def text_handler(elem):
-    '''
-    Handles `Text` special case.
-    '''
-    if 'markup' in elem.attrib:
-        return urwid.Text(**elem.attrib)
-    return urwid.Text(elem.text, **elem.attrib)
-
-
 HANDLERS = {
-    'Filler': filler_handler,
-    'Text': text_handler,
+    'Filler': filler_handler
 }
