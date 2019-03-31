@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 from xml.dom import NotFoundErr
 
-from ugh.classes import handler
+from ugh.classes import handler, IDS
 
 
 def parse(xml, data={}):
@@ -13,9 +13,9 @@ def parse(xml, data={}):
 
     Args:
         xml: XML string to be parsed.
-        callbacks: a dict containing the data and callbacks to be used in the
-        template.
+        data: Dict used to store all the data used in the
     '''
+    IDS.clear()
     root = ET.fromstring(xml)
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')

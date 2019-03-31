@@ -1,8 +1,48 @@
 import inspect
 
+from functools import wraps
+
 import urwid
 
 
+IDS = {}
+
+def by_id(id_):
+    ''' Gets the element stored in IDS '''
+    return IDS[id_]
+
+
+
+def store_id(func):
+    ''' Wraps the handlers to store the id into the dictionary '''
+    @wraps(func)
+    def wrapper(elem):
+        '''
+        Stores the element into the IDS dict and removes attribute from elem.
+
+        Raises:
+            KeyError when the ID already exists.
+        '''
+        # If no id, do nothing
+        if 'id' not in elem.attrib:
+            return func(elem)
+
+        # If ID exists already, raises error
+        if elem.attrib['id'] in IDS:
+            rep = str(by_id(elem.attrib['id']))
+            raise KeyError('ID already in use by %s' % rep)
+
+        # Stores and removes from the attributes dict
+        the_id = elem.attrib.pop('id')
+        result = func(elem)
+        IDS[the_id] = result
+        return result
+
+    return wrapper
+
+
+
+@store_id
 def handler(elem):
     '''
     Base handler for widgets creation.
@@ -20,7 +60,7 @@ def handler(elem):
     children = [handler(e) for e in elem]
     return cls(children, **elem.attrib)
 
-
+@store_id
 def filler_handler(elem):
     '''
     Handles `Filler` widget special case.
