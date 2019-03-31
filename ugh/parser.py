@@ -6,12 +6,6 @@ from xml.dom import NotFoundErr
 from ugh.classes import handler, ids_store
 
 
-CALLBACK_ATTRS = {
-    'on_press',         # Button
-    'on_state_change'   # CheckBox, RadioButton
-}
-
-
 def parse(xml, callbacks=[], data={}):
     '''
     Parses the XML into urwid widgets.
