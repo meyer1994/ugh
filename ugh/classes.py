@@ -1,5 +1,3 @@
-import inspect
-
 from functools import wraps
 
 import urwid

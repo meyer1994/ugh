@@ -11,6 +11,13 @@ def parse(xml, callbacks=[], data={}):
 
     Args:
         xml: XML string to be parsed.
+        callbacks: List of callbacks to be used in the `on_press` and
+            `on_state_change` attributes. It will be converted internally to a
+            dict of names and functions.
+        data: Dict of data to be used in `user_data` attributes.
+
+    Returns:
+        The list of elements directly inside of the `ugh` tag.
     '''
     root = ElementTree.fromstring(xml)
     if root.tag != 'ugh':
@@ -45,9 +52,6 @@ def handle_attributes(root, callbacks, data):
 
     Returns:
         Root object, modified. The modification will happen in place.
-
-    Raises:
-        KeyError when the callback was not passed in the dict.
     '''
     for child in root:
         for attr in list(child.attrib.keys()):
