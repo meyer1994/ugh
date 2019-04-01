@@ -1,7 +1,6 @@
-import xml.etree.ElementTree as ET
-
 from ast import literal_eval
 from xml.dom import NotFoundErr
+from xml.etree import ElementTree
 
 from ugh.classes import handler, ids_store
 
@@ -13,7 +12,7 @@ def parse(xml, callbacks=[], data={}):
     Args:
         xml: XML string to be parsed.
     '''
-    root = ET.fromstring(xml)
+    root = ElementTree.fromstring(xml)
     if root.tag != 'ugh':
         raise NotFoundErr('Root tag must be <ugh>')
 
@@ -62,7 +61,6 @@ def handle_attributes(root, callbacks, data):
                 if 'user_data' in child.attrib:
                     # Evaluates
                     value = child.get('user_data')
-                    print(value)
                     child.attrib['user_data'] = literal_eval(value)
                 else:
                     child.attrib['user_data'] = data
