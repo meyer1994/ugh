@@ -2,7 +2,7 @@ from setuptools import find_packages
 
 setup(
     name='ugh',
-    version='0.1.0',
+    version='0.2.0',
     description='Use JSON templates to create terminal UI with urwid.',
     url='https://github.com/meyer1994/ugh',
     author='João Vicente Meyer',
