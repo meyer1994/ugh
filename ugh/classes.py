@@ -61,7 +61,7 @@ def handler(elem):
 
 
 @store_id
-def filler_handler(elem):
+def not_list_handler(elem):
     '''
     Handles `Filler` widget special case.
 
@@ -69,9 +69,11 @@ def filler_handler(elem):
     as its first parameter. Not a list of widgets.
     '''
     child = handler(elem[0])
-    return urwid.Filler(child, **elem.attrib)
+    cls = getattr(urwid, elem.tag)
+    return cls(child, **elem.attrib)
 
 
 HANDLERS = {
-    'Filler': filler_handler
+    'Filler': not_list_handler,
+    'ListBox': not_list_handler
 }
