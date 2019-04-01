@@ -62,6 +62,7 @@ def handle_attributes(root, callbacks, data):
                 if 'user_data' in child.attrib:
                     # Evaluates
                     value = child.get('user_data')
+                    print(value)
                     child.attrib['user_data'] = literal_eval(value)
                 else:
                     child.attrib['user_data'] = data

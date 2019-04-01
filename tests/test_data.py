@@ -69,13 +69,14 @@ class TestData(TestCase):
 
     def test_invalid_data(self):
         ''' Raises ValueError when passing invalid data '''
+        def callback(): pass
         xml = r'''
         <ugh>
-            <Button label="Test" user_data="variable" />
+            <Button label="Test" on_press="callback" user_data="variable" />
         </ugh>
         '''
-        # with self.assertRaises(ValueError):
-        #     ugh.parse(xml)
+        with self.assertRaises(ValueError):
+            ugh.parse(xml, [callback])
 
     def test_invalid_callback(self):
         ''' Raises ValueError when using invalid callback '''
